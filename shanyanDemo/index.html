@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+
+    <style>
+        header{ background-color: #f2f2f2;  line-height: 42px; font-size: 18px; text-align: center; }
+        .flex-con{
+          overflow: auto
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical" >
+        <header class="border-b" >APICloud</header>
+        <div id="main" class="flex-con" >
+
+         <div class='itemtitle'>闪验230demo</div>
+         <div class="clickbtn" tapmode="active" onclick="init()">闪验初始化</div>
+         <div class="clickbtn" tapmode="active" onclick="preLogin()">闪验预取号</div>
+         <div class="clickbtn" tapmode="active" onclick="setCJSAuthThemeConfig()">设置沉浸式授权页样式</div>
+         <div class="clickbtn" tapmode="active" onclick="setDialogAuthThemeConfig()">设置弹框授权页样式</div>
+         <div class="clickbtn" tapmode="active" onclick="openActivity()">闪验拉起授权页</div>
+         <div class="clickbtn" tapmode="active" onclick="startAuthentication()">本机号获取token</div>
+         <div class="input_text">
+         <p type="text" class="testName" id="codeid"><span>code :</span><span class="code"></span></p>
+         <p type="text" class="testName" id="resultId"><span>result :</span><span class="result"></span></p>
+         </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+var shanyan = null;
+    apiready = function(){
+       shanyan = api.require('CLSDKShanYanSDKModule');
+    };
+
+    function init(){
+     var param = {appid:'loXN4jDs'};
+     shanyan.init({appid:'loXN4jDs'},
+     function(ret, err){
+          // alert(JSON.stringify(ret));
+          //$api.dom("#codeid").innerHTML("欢迎您访问简明现代魔法图书馆～～");
+          //code.text("code:" + ret.code);
+          // this.result.html("result:"+ret.result);
+          $api.dom('.code').innerHTML = ret.code;
+          $api.dom('.result').innerHTML = ret.result;
+           console.log("callback---button--shanyanSdkInit========"+ret.code+"result===="+ret.result);
+         });
+   }
+     function preLogin(){
+     shanyan.preLogin(function(ret, err){
+          // alert(JSON.stringify(ret));
+          $api.dom('.code').innerHTML = ret.code;
+          $api.dom('.result').innerHTML = ret.result;
+           console.log("callback---button--shanyanSdkGetPhoneInfo========"+ret.code+"result===="+ret.result);
+         });
+   }
+
+    /*闪验SDK配置授权界面UI*/
+    function setCJSAuthThemeConfig(){
+       shanyan.setAuthThemeConfig({
+       widgets:{
+     widget1:  {widgetId:"customView_one",
+     type:"TextView",
+       left:"",
+       top:"330",
+       right:"",
+       bottom:"",
+       width:"",
+       height:"30",
+       textContent:"自定义控件1（点击不销毁）",
+       textFont:"13",
+       textColor:"#cc0000",
+       backgroundColor:"#ffffff",
+       backgroundImgPath:"",
+       isFinish:"false"},
+       widget2:  {widgetId:"customView_two",
+       type:"ImageView",
+       left:"",
+       top:"370",
+       right:"",
+       bottom:"",
+       width:"60",
+       height:"60",
+       textContent:"自定义控件2（点击销毁）",
+       textFont:"13",
+       textColor:"#00aa00",
+       backgroundColor:"",
+       backgroundImgPath:'widget://image/qq.png',
+       isFinish:"true"}
+       },
+       uiConfig:{
+       setAuthBGImgPath:'widget://image/sy_login_bg.png',
+       setNavColor:'#ff0000',
+       setNavText:'一键登录',
+       setNavTextColor:'#080808',
+       setNavTextSize:'16',
+       setAuthNavTransparent:'true',
+       setAuthNavHidden:'false',
+       setNavReturnBtnWidth:'25',
+       setNavReturnImgPath:'sy_sdk_left',
+       setNavReturnBtnOffsetX:'0',
+       setNavReturnBtnOffsetY:'-1',
+       setNavReturnBtnOffsetRightX:'-1',
+       setNavReturnBtnHeight:'25',
+       setNavReturnImgHidden:'false',
+               setLogBtnText:"本机号登录",
+               setLogBtnOffsetY:"260",
+       setAppPrivacyOne:{
+       title:'用户协议1',
+       url:"http://flash.253.com/"
+       },
+       setPrivacyText:{
+       privacyTextOne:'同意',
+       privacyTextTwo:"、",
+       privacyTextFive:"并授权登录"
+       },
+
+       }},
+         function(result){
+               console.log("ffff"+result.code+"result===="+result.result);
+               }
+       );
+
+       }
+
+              /*闪验SDK配置授权界面UI*/
+              function setDialogAuthThemeConfig(){
+                 shanyan.setAuthThemeConfig({
+                   uiConfig: {
+                     setAuthBGImgPath:'widget://image/sy_login_bg.png',
+           						setNavColor: '#ff0000',
+           						setNavText: "",
+           						setNavTextSize: "0",
+           						setNavReturnBtnOffsetRightX: "15",
+           						setLogoOffsetY: "15",
+           						setLogoWidth: "110",
+           						setLogoHeight: "60",
+           						setNumFieldOffsetY: "80",
+           						setNumberSize: "18",
+           						setLogBtnText: "本机号码免密登录",
+           						setLogBtnOffsetY: "140",
+           						setPrivacyState:"true",
+           						setAppPrivacyOne: {
+           							title: '闪验用户协议',
+           							url: "https://api.253.com/api_doc/yin-si-zheng-ce/wei-hu-wang-luo-an-quan-sheng-ming.html"
+           						},
+           						setAppPrivacyTwo: {
+           							title: '闪验隐私政策',
+           							url: "https://api.253.com/api_doc/yin-si-zheng-ce/ge-ren-xin-xi-bao-hu-sheng-ming.html"
+           						},
+           						setAppPrivacyThree: {
+           							title: '服务协议',
+           							url: "https://api.253.com/api_doc/yin-si-zheng-ce/ge-ren-xin-xi-bao-hu-sheng-ming.html"
+           						},
+           						setPrivacyText: {
+           							privacyTextOne: '登录即同意',
+           							privacyTextTwo: "、",
+           							privacyTextThree: '、',
+           							privacyTextFour: '和',
+           							privacyTextFive: '并授权登录'
+           						},
+           						setSloganHidden: "true",
+           						setDialogTheme: {
+           							width: "300",
+           							height: "400",
+           							marginLeft: "0",
+           							marginTop: "0",
+           							isBottom: "false"
+           						}
+
+           					}, //授权页添加自定义控件元素
+           					widgets: {
+           						widget1: {
+           							widgetId: "customView_one",
+           							type: "TextView",
+           							left: "",
+           							top: "195",
+           							right: "",
+           							bottom: "",
+           							width: "",
+           							height: "30",
+           							textContent: "自定义控件（不销毁授权页）",
+           							textFont: "13",
+           							textColor: "#cc0000",
+           							backgroundColor: "#ffffff",
+           							isFinish: "false"
+           						},
+           						widget2: {
+           							widgetId: "customView_two",
+           							type: "ImageView",
+           							left: "",
+           							top: "230",
+           							right: "",
+           							bottom: "",
+           							width: "30",
+           							height: "30",
+                         backgroundImgPath:'widget://image/qq.png',
+           							isFinish: "true"
+           						}
+           					},
+           				},
+                   function(result){
+                     alert(JSON.stringify(result));
+                         console.log("ffff"+result.code+"result===="+result.result);
+                         }
+                 );
+
+                 }
+            function openActivity(){
+            var param = {isFinish:false};
+            shanyan.openActivity(param,function(ret, err){
+                  //alert(JSON.stringify(ret));
+                  $api.dom('.code').innerHTML = ret.code;
+                  $api.dom('.result').innerHTML = ret.result;
+                  if (ret.type == 1) {
+                    shanyan.finishAuthActivity();
+                    console.log("fff1111"+JSON.stringify(ret));
+
+                  }});
+          }
+
+          function startAuthentication(){
+            shanyan.startAuthentication(function(ret,err){
+              $api.dom('.code').innerHTML = ret.code;
+              $api.dom('.result').innerHTML = ret.result;
+              console.log("fff"+JSON.stringify(ret));
+            });
+            var s=shanyan.getPreIntStatus(function(ret,err){});
+            alert("fff"+s);
+          }
+</script>
